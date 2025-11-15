@@ -2,9 +2,33 @@
 title: Gerrymandering Metrics
 format: typst
 ---
-
+Approach A 
+spatial thing - AWinterpolate 
+left joins 
+group by, summarise 
 ### 2024 Election Results and the 2024 District Map
 
+## Mean-Median Score
+```{r}
+#read in the SRprec csv, create a table
+SRprec <- read.csv("state_g24_rg_rr_sr_svprec.csv")
+SRprec <- SRprec |> select(COUNTY,SRPREC,SVPREC)
+
+#join by SVPrec
+
+#join with shapefile 
+
+#unzip shp zip
+shp <- "srprec_state_g24_v01_shp.zip"
+extrdir <- "srshp"
+unzip(zipfile = shp, exdir = extrdir, overwrite = TRUE)
+
+#extract shape file? 
+shp_path <- file.path(extrdir, "srprec_state_g24_v01.shp")
+
+#map district shapefile 
+```
+##
 
 
 ### 2024 Election Results and the proposed 2025 District Map

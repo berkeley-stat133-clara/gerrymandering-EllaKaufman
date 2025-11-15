@@ -32,7 +32,7 @@ unzip(zipfile = shp, exdir = extrdir, overwrite = TRUE)
 shp <- st_read("srprec_state_g24_v01.shp")
 
 #left join SV with shapefile
-left_join(SRprec,shp, by = "SRPREC_KEY")
+SRshp <- left_join(SRprec,shp, by = "SRPREC_KEY")
 
 #map district shapefile 
 ```

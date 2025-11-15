@@ -34,5 +34,4 @@ SVprec <- SVprec |> select(!(CNGREP02))
 #group by district and sum D and R votes, with percentage D and R vote columns 
 SVprec <- SVprec |> filter(CDDIST!=0)
 SVprecbyD <- SVprec |> group_by(CDDIST) |> mutate(CNGDEM = CNGDEM01) |> mutate(CNGREP = CNGREP01) |> mutate(svprec=SVPREC)|> summarise(CNGDEM = sum(CNGDEM),CNGREP = sum(CNGREP),svprec = SVPREC) |> mutate(percentdem = CNGDEM/(CNGDEM+CNGREP),percentrep = CNGREP/(CNGDEM+CNGREP))
-
 ```

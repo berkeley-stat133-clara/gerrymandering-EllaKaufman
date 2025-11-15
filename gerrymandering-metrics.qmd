@@ -2,21 +2,26 @@
 title: Gerrymandering Metrics
 format: typst
 ---
+notes:
 Approach A 
-spatial thing - AWinterpolate 
-left joins 
-group by, summarise 
-### 2024 Election Results and the 2024 District Map
+spatial mapping - AW interpolate 
 
 ## Mean-Median Score
 ```{r}
+#republican score
+MMR <- SVprecbyD |> mutate(prop_rep = percentrep/(percentrep+percentdem)) |> summarise(mean_prop_rep =mean(prop_rep),med_prop_rep = median(prop_rep)) |> mutate(score = mean_prop_rep- med_prop_rep)
+#0.0108 not significant, greater winning margin for republicans?
+
+#democratic score
+MMD <- SVprecbyD |> mutate(prop_dem = percentdem/(percentrep+percentdem)) |> summarise(mean_prop_dem =mean(prop_dem),med_prop_dem = median(prop_dem)) |> mutate(score = mean_prop_dem- med_prop_dem)
+#-0.0108 why negative?
+```
+
+### 2024 Election Results and the 2024 District Map
+```{r}
 #read in the SRprec csv, create a table
 SRprec <- read.csv("state_g24_rg_rr_sr_svprec.csv")
-SRprec <- SRprec |> select(COUNTY,SRPREC,SVPREC)
-
-#join by SVPrec
-
-#join with shapefile 
+SRprec <- SRprec |> select(COUNTY,SRPREC,SVPREC,SVPREC_KEY)
 
 #unzip shp zip
 shp <- "srprec_state_g24_v01_shp.zip"
@@ -24,12 +29,15 @@ extrdir <- "srshp"
 unzip(zipfile = shp, exdir = extrdir, overwrite = TRUE)
 
 #extract shape file? 
-shp_path <- file.path(extrdir, "srprec_state_g24_v01.shp")
+shp <- st_read("srprec_state_g24_v01.shp")
+
+#left join SV with shapefile
+left_join(SRprec,shp, by = "SRPREC_KEY")
 
 #map district shapefile 
 ```
-##
 
 
 ### 2024 Election Results and the proposed 2025 District Map
+
 

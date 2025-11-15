@@ -1,28 +1,30 @@
----
 title: Exploratory Data Analysis
 format: typst
 ---
 
 ### Question 1
+Do our district totals agree with those found in the district level results excel file? 
+```{r}
+library(readxl)
+DbyC<-read_excel("g24-results-by-district.xlsx")
 
-Put your question here.
+```
 
 ### Answer 1
-
-Put your answer here.
+we will have an undercount in our district totals - the excel data accounts for asterix row races, our totals are summed after asterix rows are removed. 
 
 ### Question 2
-
-Put your question here.
+how does the amount of precincts per county vary?
 
 ### Answer 2
+comparing precinct names 
+#anchor end of string if there is an A 
 
 Put your answer here.
 
 ### Question 3
 
-Put your question here.
-
+NA
 ### Answer 3
 
-Put your answer here.
+NA

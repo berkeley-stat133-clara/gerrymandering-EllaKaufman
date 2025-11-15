@@ -1,5 +1,38 @@
----
 title: Data Cleaning
 format: typst
 ---
 
+```{r}
+SVprec<- read.csv("g24_sov_by_g24_svprec.csv")
+
+library(dplyr)
+library(tidyverse)
+library(sf)
+```
+
+
+```{r}
+#select information columns and CNG races
+SVprec <- SVprec |> select(COUNTY, FIPS, SVPREC,SVPREC_KEY,CDDIST,CNGDEM01,CNGDEM02,CNGREP01,CNGREP02)
+
+#remove non-numeric characters from CNG races
+SVprec <- SVprec |> filter(CNGDEM01 != "***" & CNGDEM02 != "***" & CNGREP01 != "***" & CNGREP02 != "***") 
+
+#convert type str cols to type dbl
+SVprec$CNGDEM01 <- as.numeric(SVprec$CNGDEM01)
+SVprec$CNGDEM02 <- as.numeric(SVprec$CNGDEM02)
+SVprec$CNGREP01 <- as.numeric(SVprec$CNGREP01)
+SVprec$CNGREP02 <- as.numeric(SVprec$CNGREP02)
+
+#filter rows to get only DEM vs REP races 
+SVprec <- SVprec |> filter(CNGDEM01!=0 & CNGREP01!=0 & CNGDEM02 ==0 & CNGREP02==0)
+
+#remove empty columns 
+SVprec <- SVprec |> select(!(CNGDEM02))
+SVprec <- SVprec |> select(!(CNGREP02))
+
+#group by district and sum D and R votes, with percentage D and R vote columns 
+SVprec <- SVprec |> filter(CDDIST!=0)
+SVprecbyD <- SVprec |> group_by(CDDIST) |> mutate(CNGDEM = CNGDEM01) |> mutate(CNGREP = CNGREP01) |> mutate(svprec=SVPREC)|> summarise(CNGDEM = sum(CNGDEM),CNGREP = sum(CNGREP),svprec = SVPREC) |> mutate(percentdem = CNGDEM/(CNGDEM+CNGREP),percentrep = CNGREP/(CNGDEM+CNGREP))
+
+```
